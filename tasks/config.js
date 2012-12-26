@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   var _           = grunt.util._;
   var path        = require('path');
 
-  var config = function(target, destPath, srcPath) {
+  var config = function(target, srcPath, tmpPath, buildPath, distPath) {
     // load component.json
     var jsonFile  = path.join(srcPath, 'component.json');
     var component;
@@ -16,16 +16,12 @@ module.exports = function(grunt) {
       grunt.fail.fatal('component.json is not found in ' + srcPath);
     }
 
-    // build path
-    var buildPath = path.join(destPath, "build");
-    var distPath  = path.join(destPath, "dist");
-    var tmpPath   = path.join(destPath, "tmp");
-
     // various assets
     var modules   = joinPath(srcPath, _.keys(component.modules));
     var styles    = joinPath(srcPath, component.styles);
     var images    = joinPath(srcPath, component.images);
     var fonts     = joinPath(srcPath, component.fonts);
+    var assets    = _.chain([images, fonts]).flatten().compact().value();
 
     var moduleOpt = {
       processName: function(fileName){
@@ -40,52 +36,66 @@ module.exports = function(grunt) {
       basePath: buildPath
     };
 
-    console.log(_.chain([images, fonts]).flatten().compact().value());
-
     var tasks = [[
       'clean',
       'dest',
-      path.join(destPath, "*")
-    ],[
-      'handlebars',
-      'build_modules',
-      path.join(buildPath, 'modules.js'),
-      modules,
-      moduleOpt
-    ],[
-      'wrap',
-      'wrap_modules',
-      path.join(buildPath, 'modules-amd.js'),
-      path.join(buildPath, 'modules.js'),
-      wrapOpt
-    ],[
-      'uglify',
-      'uglify_modules',
-      path.join(distPath, 'modules.js'),
-      path.join(buildPath, 'modules-amd.js')
-    ],[
-      'stylus',
-      'build_styles',
-      path.join(tmpPath, 'theme.css'),
-      styles,
-      { 'include css': true, compress: false }
-    ],[
-      'scopecss',
-      'scope_theme',
-      path.join(buildPath, 'theme.css'),
-      path.join(tmpPath, 'theme.css'),
-      { scope: 'div.module' }
-    ],[
-      'mincss',
-      'minify_styles',
-      path.join(distPath, 'theme.css'),
-      path.join(buildPath, 'theme.css')
-    ],[
-      'copy',
-      'copy_assets_to_build',
-      path.join(distPath, '/'),
-      _.chain([images, fonts]).flatten().compact().value()
+      [
+        path.join(buildPath, "*"),
+        path.join(distPath, "*"),
+        path.join(tmpPath, "*")
+      ]
     ]];
+
+    if(!_.isEmpty(modules)) {
+      tasks = tasks.concat([[
+        'handlebars',
+        'build_modules',
+        path.join(buildPath, 'modules.js'),
+        modules,
+        moduleOpt
+      ],[
+        'wrap',
+        'wrap_modules',
+        path.join(buildPath, 'modules-amd.js'),
+        path.join(buildPath, 'modules.js'),
+        wrapOpt
+      ],[
+        'uglify',
+        'uglify_modules',
+        path.join(distPath, 'modules.js'),
+        path.join(buildPath, 'modules-amd.js')
+      ]]);
+    }
+
+    if(!_.isEmpty(styles)) {
+      tasks = tasks.concat([[
+        'stylus',
+        'build_styles',
+        path.join(tmpPath, 'theme.css'),
+        styles,
+        { 'include css': true, compress: false }
+      ],[
+        'scopecss',
+        'scope_theme',
+        path.join(buildPath, 'theme.css'),
+        path.join(tmpPath, 'theme.css'),
+        { scope: 'div.module' }
+      ],[
+        'mincss',
+        'minify_styles',
+        path.join(distPath, 'theme.css'),
+        path.join(buildPath, 'theme.css')
+      ]]);
+    }
+
+    if(!_.isEmpty(assets)) {
+      tasks.push([
+        'copy',
+        'copy_assets_to_build',
+        path.join(distPath, '/'),
+        assets
+      ]);
+    }
 
     // config Grunt to do its magic
     var conf = function(task, suffix, dest, src, options) {

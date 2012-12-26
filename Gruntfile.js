@@ -23,9 +23,10 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     curbtemp: {
       compile: {
-        files: {
-          'tmp' : 'test/fixtures/example_template'
-        }
+        srcPath: 'test/fixtures/example_template',
+        tmpPath: 'tmp/tmp',
+        buildPath: 'tmp/build',
+        distPath: 'tmp/dist'
       }
     },
 

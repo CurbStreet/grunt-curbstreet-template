@@ -9,7 +9,13 @@ module.exports = function(grunt) {
 
     grunt.verbose.writeflags(this.options, 'Options');
 
-    var tasks = config(target, this.file.dest, this.file.srcRaw[0]);
+    // build path
+    var srcPath   = this.data.srcPath;
+    var tmpPath   = this.data.tmpPath;
+    var buildPath = this.data.buildPath;
+    var distPath  = this.data.distPath;
+
+    var tasks = config(target, srcPath, tmpPath, buildPath, distPath);
 
     //this.requires(tasks);
     grunt.task.run(tasks);
