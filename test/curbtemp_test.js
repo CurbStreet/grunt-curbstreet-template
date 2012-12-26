@@ -3,8 +3,8 @@
 var grunt = require('grunt');
 
 exports['test modules'] = function(test) {
-  var expect = 'this.JST=this.JST||{},this.JST["test/fixtures/example_template/templates/test.hbs"]=function(t,e,s){return s=s||t.helpers,"<h1>test</h1>"},this.JST["test/fixtures/example_template/templates/test2.hbs"]=function(t,e,s){return s=s||t.helpers,"<h1>test2</h1>"};';
-  var result = grunt.file.read('tmp/dist/example_template/modules.min.js');
+  var expect = '(function(){define([],function(){return this.JST=this.JST||{},this.JST.test=function(t,e,n){return n=n||t.helpers,"<h1>test</h1>"},this.JST.test2=function(t,e,n){return n=n||t.helpers,"<h1>test2</h1>"},this.JST})}).call({});';
+  var result = grunt.file.read('tmp/dist/modules.js');
 
   test.equal(expect, result, 'should concat and minify modules');
 
@@ -13,7 +13,7 @@ exports['test modules'] = function(test) {
 
 exports['test theme'] = function(test) {
   var expect = '.main{color:red}.imported{color:#00f}.concat{color:#00f}';
-  var result = grunt.file.read('tmp/dist/example_template/theme.min.css');
+  var result = grunt.file.read('tmp/dist/theme.css');
 
   test.equal(expect, result, 'should import, concat, and minify theme');
 
@@ -22,7 +22,7 @@ exports['test theme'] = function(test) {
 
 exports['test images'] = function(test) {
   var expect = 'mock png';
-  var result = grunt.file.read('tmp/dist/example_template/images/mock.png');
+  var result = grunt.file.read('tmp/dist/images/mock.png');
 
   test.equal(expect, result, 'should copy images');
 
@@ -31,7 +31,7 @@ exports['test images'] = function(test) {
 
 exports['test fonts'] = function(test) {
   var expect = 'mock font';
-  var result = grunt.file.read('tmp/dist/example_template/fonts/mock.eot');
+  var result = grunt.file.read('tmp/dist/fonts/mock.eot');
 
   test.equal(expect, result, 'should copy fonts');
 

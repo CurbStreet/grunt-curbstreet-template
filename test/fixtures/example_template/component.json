@@ -10,10 +10,16 @@
     "name": "Aaron Qian",
     "email": "aqian@curbstreet.com"
   }],
-  "templates": [
-    "templates/test.hbs",
-    "templates/test2.hbs"
-  ],
+  "modules": {
+    "templates/test.hbs": {
+      "name": "Test",
+      "key": "test"
+    },
+    "templates/test2.hbs": {
+      "name": "Test 2",
+      "key": "test2"
+    }
+  },
   "styles": [
     "styles/main.styl",
     "styles/concat.css"

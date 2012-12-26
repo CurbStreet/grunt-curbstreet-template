@@ -16,41 +16,68 @@ module.exports = function(grunt) {
       grunt.fail.fatal('component.json is not found in ' + srcPath);
     }
 
-    // clean path
-    var cleanPath = path.join(destPath, "*");
+    // build path
+    var buildPath = path.join(destPath, "build");
+    var distPath  = path.join(destPath, "dist");
 
     // various assets
-    var modules   = joinPath(srcPath, component.templates);
+    var modules   = joinPath(srcPath, _.keys(component.modules));
     var styles    = joinPath(srcPath, component.styles);
-    var images    = joinPath(srcPath, component.images, "**", "*");
-    var fonts     = joinPath(srcPath, component.fonts, "**", "*");
+    var images    = joinPath(srcPath, component.images);
+    var fonts     = joinPath(srcPath, component.fonts);
 
-    // modules
-    var modulejs  = path.join(destPath, 'modules.js');
-    var modulemin = path.join(destPath, 'modules.min.js');
+    var moduleOpt = {
+      processName: function(fileName){
+        fileName = fileName.replace(srcPath + "/", '');
+        return component.modules[fileName].key;
+      }
+    };
 
-    // styles
-    var stylecss  = path.join(destPath, 'theme.css');
-    var stylemin  = path.join(destPath, 'theme.min.css');
-    var styleOpt  = { 'include css': true, compress: false };
-    // copy other assets
-    var copyDest  = path.join(destPath, '/');
-    var copySrc   = _.flatten([images, fonts]);
-    copySrc = _.compact(copySrc);
+    var wrapOpt = {
+      header: "(function(){define([],function(){\n",
+      footer: "\nreturn this.JST;});}).call({});",
+      basePath: buildPath
+    };
+
+    console.log(_.chain([images, fonts]).flatten().compact().value());
+
+    var tasks = [[
+      'clean',
+      path.join(destPath, "*")
+    ],[
+      'handlebars',
+      path.join(buildPath, 'modules.js'),
+      modules,
+      moduleOpt
+    ],[
+      'wrap',
+      path.join(buildPath, 'modules-amd.js'),
+      path.join(buildPath, 'modules.js'),
+      wrapOpt
+    ],[
+      'uglify',
+      path.join(distPath, 'modules.js'),
+      path.join(buildPath, 'modules-amd.js')
+    ],[
+      'stylus',
+      path.join(buildPath, 'theme.css'),
+      styles,
+      { 'include css': true, compress: false }
+    ],[
+      'mincss',
+      path.join(distPath, 'theme.css'),
+      path.join(buildPath, 'theme.css')
+    ],[
+      'copy',
+      path.join(distPath, '/'),
+      _.chain([images, fonts]).flatten().compact().value()
+    ]];
 
     // config Grunt to do its magic
     var conf = function(task, dest, src, options) {
       return configureTask(task, target, dest, src, options);
     };
 
-    var tasks = [
-      [ 'clean',        cleanPath                         ],
-      [ 'handlebars',   modulejs,     modules             ],
-      [ 'uglify',       modulemin,    modulejs            ],
-      [ 'stylus',       stylecss,     styles,   styleOpt  ],
-      [ 'mincss',       stylemin,     stylecss            ],
-      [ 'copy',         copyDest,     copySrc             ]
-    ];
 
     return _.map(tasks, function(args){ return conf.apply(null, args); });
   };
