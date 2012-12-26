@@ -19,6 +19,7 @@ module.exports = function(grunt) {
     // build path
     var buildPath = path.join(destPath, "build");
     var distPath  = path.join(destPath, "dist");
+    var tmpPath   = path.join(destPath, "tmp");
 
     // various assets
     var modules   = joinPath(srcPath, _.keys(component.modules));
@@ -43,51 +44,67 @@ module.exports = function(grunt) {
 
     var tasks = [[
       'clean',
+      'dest',
       path.join(destPath, "*")
     ],[
       'handlebars',
+      'build_modules',
       path.join(buildPath, 'modules.js'),
       modules,
       moduleOpt
     ],[
       'wrap',
+      'wrap_modules',
       path.join(buildPath, 'modules-amd.js'),
       path.join(buildPath, 'modules.js'),
       wrapOpt
     ],[
       'uglify',
+      'uglify_modules',
       path.join(distPath, 'modules.js'),
       path.join(buildPath, 'modules-amd.js')
     ],[
       'stylus',
-      path.join(buildPath, 'theme.css'),
+      'build_styles',
+      path.join(tmpPath, 'theme.css'),
       styles,
       { 'include css': true, compress: false }
     ],[
+      'scopecss',
+      'scope_theme',
+      path.join(buildPath, 'theme.css'),
+      path.join(tmpPath, 'theme.css'),
+      { scope: 'div.module' }
+    ],[
       'mincss',
+      'minify_styles',
       path.join(distPath, 'theme.css'),
       path.join(buildPath, 'theme.css')
     ],[
       'copy',
+      'copy_assets_to_build',
       path.join(distPath, '/'),
       _.chain([images, fonts]).flatten().compact().value()
     ]];
 
     // config Grunt to do its magic
-    var conf = function(task, dest, src, options) {
-      return configureTask(task, target, dest, src, options);
+    var conf = function(task, suffix, dest, src, options) {
+      configureTask(taskKey(task, target, suffix), dest, src, options);
+      return taskName(task, target, suffix);
     };
 
 
     return _.map(tasks, function(args){ return conf.apply(null, args); });
   };
 
-  var taskName = function(task, target) {
-    return task + ":" + target;
+  var taskName = function(task, target, suffix) {
+    suffix = suffix || "";
+    return task + ":" + target + "_" + suffix;
   };
 
-  var taskKey = function(task, target) {
-    return task + "." + target;
+  var taskKey = function(task, target, suffix) {
+    suffix = suffix || "";
+    return task + "." + target + "_" + suffix;
   };
 
   var filesHash = function(dest, src) {
@@ -101,8 +118,7 @@ module.exports = function(grunt) {
     });
   };
 
-  var configureTask = function(task, target, dest, src, options) {
-    var key     = taskKey(task, target);
+  var configureTask = function(task, dest, src, options) {
     var config  = {};
     var files   = {};
 
@@ -123,10 +139,8 @@ module.exports = function(grunt) {
     }
 
     grunt.verbose.write('configuring ' + task + ' task.');
-    grunt.config(key, config);
+    grunt.config(task, config);
     grunt.verbose.ok();
-
-    return taskName(task, target);
   };
 
   return config;
