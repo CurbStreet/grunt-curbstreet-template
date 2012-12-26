@@ -1,0 +1,27 @@
+{
+  "name": "Example Template",
+  "version": "0.1.0",
+  "repo": "git://github.com/CurbStreet/example-template.git",
+  "description": "My Awesome Curbstreet Template",
+  "keywords": "example simple commercial",
+  "license": "path/to/license_file",
+  "author": "CurbStreet <support@curbstreet.com>",
+  "contributors": [{
+    "name": "Aaron Qian",
+    "email": "aqian@curbstreet.com"
+  }],
+  "templates": [
+    "templates/test.hbs",
+    "templates/test2.hbs"
+  ],
+  "styles": [
+    "styles/main.styl",
+    "styles/concat.css"
+  ],
+  "images": [
+    "images/mock.png"
+  ],
+  "fonts": [
+    "fonts/mock.eot"
+  ]
+}
