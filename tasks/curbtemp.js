@@ -15,6 +15,10 @@ module.exports = function(grunt) {
     var buildPath = this.data.buildPath;
     var distPath  = this.data.distPath;
 
+    if(!srcPath || !tmpPath || !buildPath || !distPath) {
+      grunt.fail.fatal(new Error('srcPath, tmpPath, buildPath, and distPath are required'));
+    }
+
     var tasks = config(target, srcPath, tmpPath, buildPath, distPath);
 
     //this.requires(tasks);
