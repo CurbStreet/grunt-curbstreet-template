@@ -50,20 +50,20 @@ module.exports = function(grunt) {
       tasks = tasks.concat([[
         'handlebars',
         'build_modules',
-        path.join(buildPath, 'modules.js'),
+        path.join(tmpPath, 'modules.js'),
         modules,
         moduleOpt
       ],[
         'wrap',
         'wrap_modules',
-        path.join(buildPath, 'modules-amd.js'),
         path.join(buildPath, 'modules.js'),
+        path.join(tmpPath, 'modules.js'),
         wrapOpt
       ],[
         'uglify',
         'uglify_modules',
         path.join(distPath, 'modules.js'),
-        path.join(buildPath, 'modules-amd.js')
+        path.join(buildPath, 'modules.js')
       ]]);
     }
 
