@@ -27,11 +27,12 @@ module.exports = function(grunt) {
       processName: function(fileName){
         fileName = fileName.replace(srcPath + "/", '');
         return component.modules[fileName].key;
-      }
+      },
+      wrapped: true
     };
 
     var wrapOpt = {
-      header: "(function(){define([],function(){\n",
+      header: "(function(){define(['handlebars'],function(Handlebars){\n",
       footer: "\nreturn this.JST;});}).call({});",
       basePath: buildPath
     };
