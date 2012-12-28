@@ -12,7 +12,7 @@ exports['test modules'] = function(test) {
 };
 
 exports['test theme'] = function(test) {
-  var expect = 'div.module .main{color:red}div.module .imported{color:#00f}div.module .concat{color:#00f}';
+  var expect = 'div.module-wrap .main{color:red}div.module-wrap .imported{color:#00f}div.module-wrap .concat{color:#00f}';
   var result = grunt.file.read('tmp/dist/theme.css');
 
   test.equal(expect, result, 'should import, concat, and minify theme');

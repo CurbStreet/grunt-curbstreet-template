@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         'scope_theme',
         path.join(buildPath, 'theme.css'),
         path.join(tmpPath, 'theme.css'),
-        { scope: 'div.module' }
+        { scope: 'div.module-wrap' }
       ],[
         'mincss',
         'minify_styles',
