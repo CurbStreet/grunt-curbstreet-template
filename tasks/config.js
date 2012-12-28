@@ -93,6 +93,12 @@ module.exports = function(grunt) {
       tasks.push([
         'copy',
         'copy_assets_to_build',
+        path.join(buildPath, '/'),
+        assets
+      ]);
+      tasks.push([
+        'copy',
+        'copy_assets_to_release',
         path.join(distPath, '/'),
         assets
       ]);
