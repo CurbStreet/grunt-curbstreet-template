@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     var fonts     = joinPath(srcPath, component.fonts);
     var assets    = _.chain([images, fonts]).flatten().compact().value();
 
-    var moduleOpt = {
+    var pageOpt = {
       processName: function(fileName){
         fileName = fileName.replace(srcPath + "/", '');
         return component.pages[fileName].key;
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         'build_pages',
         path.join(tmpPath, 'pages.js'),
         pages,
-        moduleOpt
+        pageOpt
       ],[
         'wrap',
         'wrap_pages',
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         'scope_theme',
         path.join(buildPath, 'theme.css'),
         path.join(tmpPath, 'theme.css'),
-        { scope: 'div.module-wrap' }
+        { scope: 'div.page-wrap' }
       ],[
         'mincss',
         'minify_styles',
