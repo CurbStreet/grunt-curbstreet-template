@@ -50,21 +50,21 @@ module.exports = function(grunt) {
     if(!_.isEmpty(pages)) {
       tasks = tasks.concat([[
         'handlebars',
-        'build_templates',
-        path.join(tmpPath, 'templates.js'),
+        'build_pages',
+        path.join(tmpPath, 'pages.js'),
         pages,
         moduleOpt
       ],[
         'wrap',
-        'wrap_templates',
-        path.join(buildPath, 'templates.js'),
-        path.join(tmpPath, 'templates.js'),
+        'wrap_pages',
+        path.join(buildPath, 'pages.js'),
+        path.join(tmpPath, 'pages.js'),
         wrapOpt
       ],[
         'uglify',
-        'uglify_templates',
-        path.join(distPath, 'templates.js'),
-        path.join(buildPath, 'templates.js')
+        'uglify_pages',
+        path.join(distPath, 'pages.js'),
+        path.join(buildPath, 'pages.js')
       ]]);
     }
 
