@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     }
 
     // various assets
-    var modules   = joinPath(srcPath, _.keys(component.modules));
+    var pages   = joinPath(srcPath, _.keys(component.pages));
     var styles    = joinPath(srcPath, component.styles);
     var images    = joinPath(srcPath, component.images);
     var fonts     = joinPath(srcPath, component.fonts);
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     var moduleOpt = {
       processName: function(fileName){
         fileName = fileName.replace(srcPath + "/", '');
-        return component.modules[fileName].key;
+        return component.pages[fileName].key;
       },
       wrapped: true
     };
@@ -47,24 +47,24 @@ module.exports = function(grunt) {
       ]
     ]];
 
-    if(!_.isEmpty(modules)) {
+    if(!_.isEmpty(pages)) {
       tasks = tasks.concat([[
         'handlebars',
-        'build_modules',
-        path.join(tmpPath, 'modules.js'),
-        modules,
+        'build_templates',
+        path.join(tmpPath, 'templates.js'),
+        pages,
         moduleOpt
       ],[
         'wrap',
-        'wrap_modules',
-        path.join(buildPath, 'modules.js'),
-        path.join(tmpPath, 'modules.js'),
+        'wrap_templates',
+        path.join(buildPath, 'templates.js'),
+        path.join(tmpPath, 'templates.js'),
         wrapOpt
       ],[
         'uglify',
-        'uglify_modules',
-        path.join(distPath, 'modules.js'),
-        path.join(buildPath, 'modules.js')
+        'uglify_templates',
+        path.join(distPath, 'templates.js'),
+        path.join(buildPath, 'templates.js')
       ]]);
     }
 
