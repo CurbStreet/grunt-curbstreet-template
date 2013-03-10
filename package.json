@@ -11,14 +11,15 @@
   },
   "license": "proprietary",
   "main": "grunt.js",
-  "dependencies": {
-    "grunt-contrib-clean": "~0.4.0a",
-    "grunt-contrib-handlebars": "~0.3.3",
-    "grunt-contrib-uglify": "~0.1.0",
-    "grunt-contrib-stylus": "~0.3.1",
-    "grunt-contrib-copy": "~0.3.2",
-    "grunt-contrib-mincss": "~0.3.2",
-    "jscssp": "~0.5.0"
+  "peerDependencies": {
+    "grunt": "0.4.x",
+    "grunt-contrib-clean": ">= 0.4",
+    "grunt-contrib-handlebars": ">= 0.5",
+    "grunt-contrib-uglify": ">= 0.1",
+    "grunt-contrib-stylus": ">= 0.4",
+    "grunt-contrib-copy": ">= 0.4",
+    "grunt-contrib-mincss": ">= 0.3",
+    "jscssp": ">= 0.5"
   },
   "keywords": [
     "gruntplugin",
