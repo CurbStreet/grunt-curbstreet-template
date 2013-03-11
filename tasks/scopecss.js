@@ -6,35 +6,36 @@ module.exports = function(grunt) {
 
     grunt.verbose.writeflags(this.options, 'Options');
 
-    var src     = this.file.src;
-    var dest    = this.file.dest;
-    var scope   = options.scope;
+    this.files.forEach(function(file){
+      var src     = file.src;
+      var dest    = file.dest;
+      var scope   = options.scope;
 
-    if (src.length === 0) {
-      grunt.log.writeln('Nothing to scope!');
-      return;
-    }
+      if (src.length === 0) {
+        grunt.log.writeln('Nothing to scope!');
+        return;
+      }
 
-    var jscssp = require('jscssp');
+      var jscssp = require('jscssp');
 
 
-    src.forEach(function(file){
-      var content = grunt.file.read(file);
-      var parser = new jscssp.CSSParser();
-      var sheet = parser.parse(content);
+      src.forEach(function(file){
+        var content = grunt.file.read(file);
+        var parser = new jscssp.CSSParser();
+        var sheet = parser.parse(content);
 
-      sheet.cssRules.forEach(function(rule){
-        if(rule.mSelectorText) {
-          rule.mSelectorText = scope + ' ' + rule.mSelectorText;
-        }
-        if(rule.parsedCssText) {
-          rule.parsedCssText = scope + ' ' + rule.parsedCssText;
-        }
+        sheet.cssRules.forEach(function(rule){
+          if(rule.mSelectorText) {
+            rule.mSelectorText = scope + ' ' + rule.mSelectorText;
+          }
+          if(rule.parsedCssText) {
+            rule.parsedCssText = scope + ' ' + rule.parsedCssText;
+          }
+        });
+
+        grunt.file.write(dest, sheet.cssText());
+        grunt.log.writeln('File ' + dest.cyan + ' created.');
       });
-
-      grunt.file.write(dest, sheet.cssText());
-      grunt.log.writeln('File ' + dest.cyan + ' created.');
     });
-
   });
 };

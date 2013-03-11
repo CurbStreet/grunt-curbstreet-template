@@ -2,17 +2,17 @@
 
 var grunt = require('grunt');
 
-exports['test modules'] = function(test) {
-  var expect = '(function(){define(["handlebars"],function(t){return this.JST=this.JST||{},this.JST.test=t.template(function(t,e,n){return n=n||t.helpers,"<h1>test</h1>"}),this.JST.test2=t.template(function(t,e,n){return n=n||t.helpers,"<h1>test2</h1>"}),this.JST})}).call({});';
-  var result = grunt.file.read('tmp/dist/modules.js');
+exports['test pages.js'] = function(test) {
+  var expect = '(function(){define(["handlebars"],function(t){return this.JST=this.JST||{},this.JST.test=t.template(function(t,e,n,h,i){return this.compilerInfo=[2,">= 1.0.0-rc.3"],n=n||t.helpers,i=i||{},"<h1>test</h1>"}),this.JST.test2=t.template(function(t,e,n,h,i){return this.compilerInfo=[2,">= 1.0.0-rc.3"],n=n||t.helpers,i=i||{},"<h1>test2</h1>"}),this.JST})}).call({});';
+  var result = grunt.file.read('tmp/dist/pages.js');
 
   test.equal(expect, result, 'should concat and minify modules');
 
   test.done();
 };
 
-exports['test theme'] = function(test) {
-  var expect = 'div.module-wrap .main{color:red}div.module-wrap .imported{color:#00f}div.module-wrap .concat{color:#00f}';
+exports['test theme.css'] = function(test) {
+  var expect = 'div.page-wrap .main{color:red}div.page-wrap .imported{color:#00f}div.page-wrap .concat{color:#00f}';
   var result = grunt.file.read('tmp/dist/theme.css');
 
   test.equal(expect, result, 'should import, concat, and minify theme');

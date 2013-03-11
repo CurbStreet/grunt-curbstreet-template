@@ -19,8 +19,8 @@ module.exports = function(grunt) {
     // various assets
     var pages   = joinPath(srcPath, _.keys(component.pages));
     var styles    = joinPath(srcPath, component.styles);
-    var images    = joinPath(srcPath, component.images);
-    var fonts     = joinPath(srcPath, component.fonts);
+    var images    = component.images;
+    var fonts     = component.fonts;
     var assets    = _.chain([images, fonts]).flatten().compact().value();
 
     var pageOpt = {
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
         path.join(tmpPath, 'theme.css'),
         { scope: 'div.page-wrap' }
       ],[
-        'mincss',
+        'cssmin',
         'minify_styles',
         path.join(distPath, 'theme.css'),
         path.join(buildPath, 'theme.css')
@@ -94,19 +94,31 @@ module.exports = function(grunt) {
         'copy',
         'copy_assets_to_build',
         path.join(buildPath, '/'),
-        assets
+        assets,
+        {},
+        {expand: true, cwd: (srcPath+'/') }
       ]);
       tasks.push([
         'copy',
         'copy_assets_to_release',
         path.join(distPath, '/'),
-        assets
+        assets,
+        {},
+        {expand: true, cwd: (srcPath + '/') }
       ]);
     }
 
     // config Grunt to do its magic
-    var conf = function(task, suffix, dest, src, options) {
-      configureTask(taskKey(task, target, suffix), dest, src, options);
+    var conf = function(task, suffix, dest, src, options, fileOptions) {
+      console.log("=======================");
+      console.log(task);
+      console.log(suffix);
+      console.log(dest);
+      console.log(src);
+      console.log(options);
+      console.log(fileOptions);
+
+      configureTask(taskKey(task, target, suffix), dest, src, options, fileOptions);
       return taskName(task, target, suffix);
     };
 
@@ -135,9 +147,9 @@ module.exports = function(grunt) {
     });
   };
 
-  var configureTask = function(task, dest, src, options) {
+  var configureTask = function(task, dest, src, options, fileOptions) {
     var config  = {};
-    var files   = {};
+    var files   = [];
 
     // if options has value, add it to config
     if( !_.isUndefined(options) && !_.isNull(options) ) {
@@ -151,7 +163,12 @@ module.exports = function(grunt) {
       // if src is not an array, force into one
       if(!_.isArray(src)) { src = [src]; }
 
-      files[dest] = src;
+      var file = {
+        src: src,
+        dest: dest
+      };
+
+      files.push(_.extend(file, fileOptions));
       config.files = files;
     }
 

@@ -10,7 +10,7 @@
     "name": "Aaron Qian",
     "email": "aqian@curbstreet.com"
   }],
-  "modules": {
+  "pages": {
     "templates/test.hbs": {
       "name": "Test",
       "key": "test"

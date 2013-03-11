@@ -12,13 +12,9 @@
   "license": "proprietary",
   "main": "grunt.js",
   "peerDependencies": {
-    "grunt": "0.4.x",
-    "grunt-contrib-clean": ">= 0.4",
-    "grunt-contrib-handlebars": ">= 0.5",
-    "grunt-contrib-uglify": ">= 0.1",
-    "grunt-contrib-stylus": ">= 0.4",
-    "grunt-contrib-copy": ">= 0.4",
-    "grunt-contrib-mincss": ">= 0.3",
+    "grunt": "0.4.x"
+  },
+  "dependencies": {
     "jscssp": ">= 0.5"
   },
   "keywords": [
@@ -28,7 +24,14 @@
   ],
   "devDependencies": {
     "grunt": "0.4.x",
-    "grunt-contrib-jshint": "~0.1.0",
-    "grunt-contrib-nodeunit": "~0.1.1"
+    "grunt-contrib-internal": "*",
+    "grunt-contrib-clean": ">= 0.4",
+    "grunt-contrib-handlebars": ">= 0.5",
+    "grunt-contrib-uglify": ">= 0.1",
+    "grunt-contrib-stylus": ">= 0.4",
+    "grunt-contrib-copy": ">= 0.4",
+    "grunt-contrib-cssmin": ">= 0.4",
+    "grunt-contrib-jshint": "0.2.x",
+    "grunt-contrib-nodeunit": "0.1.x"
   }
 }
