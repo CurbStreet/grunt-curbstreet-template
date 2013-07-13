@@ -3,7 +3,7 @@
 var grunt = require('grunt');
 
 exports['test pages.js'] = function(test) {
-  var expect = '(function(){define(["handlebars"],function(t){return this.JST=this.JST||{},this.JST.test=t.template(function(t,e,n,h,i){return this.compilerInfo=[2,">= 1.0.0-rc.3"],n=n||t.helpers,i=i||{},"<h1>test</h1>"}),this.JST.test2=t.template(function(t,e,n,h,i){return this.compilerInfo=[2,">= 1.0.0-rc.3"],n=n||t.helpers,i=i||{},"<h1>test2</h1>"}),this.JST})}).call({});';
+  var expect = '!function(){define(["handlebars"],function(a){return this.JST=this.JST||{},this.JST.test=a.template(function(a,b,c,d,e){return this.compilerInfo=[4,">= 1.0.0"],c=this.merge(c,a.helpers),e=e||{},"<h1>test</h1>"}),this.JST.test2=a.template(function(a,b,c,d,e){return this.compilerInfo=[4,">= 1.0.0"],c=this.merge(c,a.helpers),e=e||{},"<h1>test2</h1>"}),this.JST})}.call({});';
   var result = grunt.file.read('tmp/dist/pages.js');
 
   test.equal(expect, result, 'should concat and minify modules');
