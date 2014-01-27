@@ -2,7 +2,7 @@
   "name": "grunt-curbstreet-template",
   "title": "grunt-curbstreet-template",
   "description": "Grunt Task for compiling a CurbStreet Template",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/CurbStreet/grunt-curbstreet-template",
   "author": "Aaron Qian <aq1018@gmail.com>",
   "repository": {
