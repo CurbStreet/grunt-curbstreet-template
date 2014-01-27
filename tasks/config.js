@@ -26,7 +26,15 @@ module.exports = function(grunt) {
     var pageOpt = {
       processName: function(fileName){
         fileName = fileName.replace(srcPath + "/", '');
-        return component.pages[fileName].key;
+        var f = component.pages[fileName].key;
+        var theme = target.replace("curbtemp_", '');
+        return f + theme;
+      },
+      processPartialName: function(fileName){
+        fileName = fileName.replace(srcPath + "/", '');
+        var f = component.pages[fileName].key;
+        var theme = target.replace("curbtemp_", '');
+        return f + theme;
       },
       wrapped: true
     };
